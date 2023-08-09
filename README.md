@@ -4,7 +4,7 @@
  ![fOODIES (1)](https://github.com/abhii2002/NoteApp/assets/87520905/61b6ea85-41a2-4169-96c2-978ae34155a6)
 
  # Download
- Download app from here https://github.com/abhii2002/NoteApp/releases/tag/v1.0.0-alpha
+ Download app from [here](https://github.com/abhii2002/NoteApp/releases/tag/v1.0.0-alpha)
  
 # Tech stack & Open-source libraries. 
  - Minimum SDK level 21
