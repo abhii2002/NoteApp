@@ -1,5 +1,5 @@
 # NoteApp
- Simple Note application which stores data locally in the device 
+ Simple Note application which stores data locally in the device is used for making short text notes, updating when you need them, and trashing when you are done.
 
  ![fOODIES (1)](https://github.com/abhii2002/NoteApp/assets/87520905/61b6ea85-41a2-4169-96c2-978ae34155a6)
 
