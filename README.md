@@ -3,9 +3,9 @@
 
  ![fOODIES (1)](https://github.com/abhii2002/NoteApp/assets/87520905/61b6ea85-41a2-4169-96c2-978ae34155a6)
 
- 
  # Download
-
+ 
+# Tech stack & Open-source libraries. 
  - Minimum SDK level 21
 - [Kotlin](https://kotlinlang.org/) based, [Coroutines](https://developer.android.com/kotlin/coroutines) + [Flow](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/) for asynchronous.
 
