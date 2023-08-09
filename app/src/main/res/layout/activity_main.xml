@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fcfcfc"
+    tools:context=".activities.MainActivity">
+
+
+
+
+
+  <androidx.appcompat.widget.Toolbar
+      android:id="@+id/toolbar_main_activity"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/_42sdp"
+      app:layout_constraintEnd_toEndOf="parent"
+      android:backgroundTint="#6f6fc8"
+      android:background="#6f6fc8"
+
+
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+   android:layout_weight="0"
+  android:gravity="center_horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Notes"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="@dimen/_16ssp"
+        android:textColor="@color/white"
+        android:textStyle="bold"/>
+
+<!--  <ImageView-->
+<!--      android:id="@+id/drawer_menu"-->
+<!--      android:layout_width="@dimen/_20sdp"-->
+<!--      android:layout_height="@dimen/_20sdp"-->
+<!--      android:layout_gravity="center"-->
+<!--      android:scaleType="centerCrop"-->
+<!--      android:src="@drawable/baseline_menu_24"-->
+<!--      app:tint="@color/white" />-->
+
+
+  <View
+      android:layout_width="0.5dp"
+      android:layout_height="match_parent"
+      android:background="@color/offwhite"
+      android:layout_marginTop="@dimen/_13sdp"
+      android:alpha="0.6"
+      android:layout_marginBottom="@dimen/_13sdp"
+      android:layout_marginStart="@dimen/_8sdp"
+      android:rotation="0" />
+
+</LinearLayout>
+
+
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_view"
+        android:layout_weight="9"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+       app:searchIcon="@drawable/baseline_search_24"
+
+        app:closeIcon="@drawable/baseline_close_24"/>
+
+
+
+
+<!--    <ImageView-->
+<!--        android:id="@+id/button_delete"-->
+<!--        android:layout_width="@dimen/_20sdp"-->
+<!--        android:layout_height="@dimen/_20sdp"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_weight="0"-->
+<!--        android:src="@drawable/baseline_more_vert_24"-->
+<!--        android:layout_marginEnd="@dimen/_10sdp"-->
+<!--        app:tint="@color/white" />-->
+
+    </LinearLayout>
+
+  </androidx.appcompat.widget.Toolbar>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_category"
+        android:layout_width="match_parent"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_main_activity" />
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/anim_no_task"
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="0dp"
+
+  
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/animsearch">
+
+    </com.airbnb.lottie.LottieAnimationView>
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/rv_main"
+      android:layout_width="match_parent"
+        android:layout_height="0dp"
+
+        android:layout_marginStart="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+       android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/rv_category" />
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_task_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/_20sdp"
+       android:layout_gravity="bottom|end"
+      android:backgroundTint="#6f6fc8"
+      app:tint="@color/offwhite"
+      app:srcCompat="@drawable/note_edit_svgrepo_com"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+

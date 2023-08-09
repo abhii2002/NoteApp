@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">NoteApp</string>
+    <string name="alert_delete_all_notes">Are you sure you want to delete All notes ?</string>
+    <string name="alert_delete_note">Are you sure you want to delete This note ?</string>
+</resources>

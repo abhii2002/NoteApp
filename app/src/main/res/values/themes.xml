@@ -1,0 +1,41 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.NoteApp" parent="Theme.Material3.Light.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:statusBarColor">#6f6fc8</item>
+        <item name="android:editTextColor">@android:color/primary_text_dark</item>
+
+    </style>
+
+    <style name="Theme.NoteApp" parent="Base.Theme.NoteApp" />
+
+    <style name="myToolbarStyle" parent="@style/Widget.AppCompat.Toolbar">
+        <item name="android:paddingTop">16dp</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlayExtended" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">0dp</item>
+        <item name="cornerSizeTopLeft">50%</item>
+    </style>
+
+    <style name="BottomSheetStyle" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Model</item>
+    </style>
+
+    <style name="Model" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/dialog_background</item>
+    </style>
+
+
+    <style name="MaterialAlertDialog_rounded" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="shapeAppearanceOverlay">@style/DialogCorners</item>
+    </style>
+
+    <style name="DialogCorners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+</resources>
