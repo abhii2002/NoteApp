@@ -10,7 +10,7 @@
  - Minimum SDK level 21
 - [Kotlin](https://kotlinlang.org/) based, [Coroutines](https://developer.android.com/kotlin/coroutines) + [Flow](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/) for asynchronous.
 
-  - Lifecycle: Observe Android lifecycles and handle UI states upon the lifecycle changes.
+  - LiveData: LiveData is an observable data holder class that is lifecycle aware.
   - ViewModel: Manages UI-related data holder and lifecycle aware. Allows data to survive configuration changes such as screen rotations.
   - Room: Constructs Database by providing an abstraction layer over SQLite to allow fluent database access.
   - Hilt: Dagger Hilt dependency injection library is crucial since it offers a uniform method of utilizing DI in your application by handling the containers for all Android classes in the project.
