@@ -10,7 +10,6 @@
     app:cardCornerRadius="@dimen/_10sdp"
     app:cardPreventCornerOverlap="true"
     android:layout_margin="@dimen/_10sdp"
-
     app:contentPaddingBottom="0dp"
     app:cardElevation="4dp"
 

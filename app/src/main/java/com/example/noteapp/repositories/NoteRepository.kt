@@ -1,7 +1,7 @@
 package com.example.noteapp.repositories
 
 import com.example.noteapp.data.models.NoteModel
-import com.example.noteapp.data.repositories.NoteDao
+import com.example.noteapp.data.NoteDao
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -17,9 +17,7 @@ to produce and consume values asynchronously. This means, for example, that the 
 class NoteRepository @Inject constructor(private val noteDao: NoteDao) {
     val getAllNotes : Flow<List<NoteModel>> = noteDao.getAllNotes()
 
-//    fun getSelectedNote(taskId: Int): Flow<NoteModel> {
-//         return noteDao.getSelectedTask(taskId = taskId)
-//    }
+
 
     fun getImportantNote(noteCategory: String) : Flow<List<NoteModel>>{
            return noteDao.getSelectedCategory(noteCategory)

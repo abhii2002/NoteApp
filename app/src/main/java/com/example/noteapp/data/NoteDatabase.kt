@@ -1,15 +1,9 @@
-package com.example.noteapp.data.repositories
+package com.example.noteapp.data
 
 import androidx.room.Database
-import androidx.room.Entity
 import androidx.room.RoomDatabase
-import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.noteapp.data.NoteDao
 import com.example.noteapp.data.models.NoteModel
-
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import javax.inject.Inject
-import javax.inject.Provider
 
 
 /*

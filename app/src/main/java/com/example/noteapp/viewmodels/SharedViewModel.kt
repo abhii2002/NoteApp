@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.ScreenState
+import com.example.noteapp.RequestState
 import com.example.noteapp.data.models.NoteModel
 import com.example.noteapp.repositories.NoteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,7 +30,7 @@ class SharedViewModel @Inject constructor(
     private val _response = MutableLiveData<Long>()
     val response: LiveData<Long> = _response
 
-    //insert note details to room databse
+    //insert note details to room database
     fun insertNote(note: NoteModel){
         viewModelScope.launch(Dispatchers.IO) {
             _response.postValue(repository.addTask(note))
@@ -70,18 +72,21 @@ class SharedViewModel @Inject constructor(
 
 
 
-    private val _noteDetails = MutableStateFlow<List<NoteModel>>(emptyList())
-    val noteDetails: StateFlow<List<NoteModel>> = _noteDetails
+    private val _noteDetails = MutableStateFlow<RequestState<List<NoteModel>>>(RequestState.Idle)
+    val noteDetails: StateFlow<RequestState<List<NoteModel>>> = _noteDetails
 
 
+
+    //collecting notes using StateFlow
     fun getNoteDetails(){
+        _noteDetails.value = RequestState.Loading
          viewModelScope.launch(Dispatchers.IO) {
              repository.getAllNotes
                  .catch {  e->
                      //Log errror here
                  }
                  .collect {
-                     _noteDetails.value = it
+                     _noteDetails.value = RequestState.Success(it)
                  }
          }
     }
@@ -92,13 +97,14 @@ class SharedViewModel @Inject constructor(
 
 
     fun getNoteCategory(note: String){
+        _noteDetails.value = RequestState.Loading
         viewModelScope.launch(Dispatchers.IO) {
             repository.getImportantNote(note)
                 .catch {  e->
                     //Log errror here
                 }
                 .collect {
-                    _noteDetails.value = it
+                    _noteDetails.value = RequestState.Success(it)
                 }
         }
     }

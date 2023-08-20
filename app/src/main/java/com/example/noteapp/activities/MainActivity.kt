@@ -1,6 +1,7 @@
 package com.example.noteapp.activities
 
 
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -20,9 +21,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.util.query
+import com.example.ScreenState
 import com.example.adapter.CategoryButtonAdapter
 import com.example.adapter.NoteItemAdapter
 import com.example.noteapp.R
+import com.example.noteapp.RequestState
 import com.example.noteapp.data.models.CategoryButtonModel
 import com.example.noteapp.data.models.NoteModel
 import com.example.noteapp.databinding.ActivityMainBinding
@@ -30,6 +33,7 @@ import com.example.noteapp.viewmodels.SharedViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.shape.ShapeAppearanceModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -37,9 +41,11 @@ import java.util.Locale
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityMainBinding
-    private val sharedViewModel : SharedViewModel by viewModels()
+    private lateinit var binding: ActivityMainBinding
+    private val sharedViewModel: SharedViewModel by viewModels()
+    private lateinit var mProgressDialog: Dialog
     private val adapter: NoteItemAdapter by lazy { NoteItemAdapter() }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,8 +58,36 @@ class MainActivity : AppCompatActivity() {
         val searchText = binding.searchView
         searchText.drawingCacheBackgroundColor = Color.CYAN
 
-          setSupportActionBar(binding.toolbarMainActivity)
-        binding.toolbarMainActivity.setOverflowIcon(ContextCompat.getDrawable(getApplicationContext(),R.drawable.baseline_more_vert_24));
+        setSupportActionBar(binding.toolbarMainActivity)
+        binding.toolbarMainActivity.setOverflowIcon(
+            ContextCompat.getDrawable(
+                getApplicationContext(),
+                R.drawable.baseline_more_vert_24
+            )
+        )
+
+        /**
+         * Here we are using the getNoteDetails method which directly collected all of our notes
+         * in the SharedViewModel class using the viewModelScope
+         */
+        sharedViewModel.getNoteDetails()
+
+        /*
+         emit and collect. Think emit is similar to live data postValue and collect is similar to observe
+         */
+        /**
+         * here we are collecting notes inside the activity itself using the lifeCycleScope (required for activities)
+         * and setting the values to the adapter.
+         */
+        this.lifecycleScope.launch {
+            sharedViewModel.noteDetails.collect { notes ->
+                getAllNotes(notes)
+            }
+        }
+
+        binding.rvMain.layoutManager =
+            LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
+        binding.rvMain.adapter = adapter
 
         val categoryButtonData = listOf(
             CategoryButtonModel("All", 1),
@@ -65,13 +99,14 @@ class MainActivity : AppCompatActivity() {
         //setting up the category button recycler view
         val categoryButtonAdapter = CategoryButtonAdapter(categoryButtonData)
 
-        binding.rvCategory.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvCategory.layoutManager =
+            LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
         binding.rvCategory.adapter = categoryButtonAdapter
-      //  categoryButtonAdapter.setData(categoryButtonData)
+        //  categoryButtonAdapter.setData(categoryButtonData)
 
-         getAllNotes()
 
-        categoryButtonAdapter.setOnItemClickListener(object: CategoryButtonAdapter.onRecyclerViewItemClickListener{
+        categoryButtonAdapter.setOnItemClickListener(object :
+            CategoryButtonAdapter.onRecyclerViewItemClickListener {
             override fun onItemClickListener(
                 view: View?,
                 position: Int,
@@ -79,23 +114,18 @@ class MainActivity : AppCompatActivity() {
                 categoryModel: CategoryButtonModel
             ) {
 
-                if(position == 0){
-                    getAllNotes()
-                }else if(position == 1){
-                    generalData("Work")
-                }
-                else if(position == 2){
-                    generalData("Reading")
-                }else if(position == 3){
-                    generalData("Important")
+                if (position == 0) {
+                  sharedViewModel.getNoteDetails()
+                } else if (position == 1) {
+                    sharedViewModel.getNoteCategory("Work")
+                } else if (position == 2) {
+                    sharedViewModel.getNoteCategory("Reading")
+                } else if (position == 3) {
+                    sharedViewModel.getNoteCategory("Important")
                 }
             }
 
         })
-
-        binding.rvMain.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
-        binding.rvMain.adapter = adapter
-
 
 
         binding.addTaskFab.setOnClickListener {
@@ -103,16 +133,16 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                if (query != null){
+                if (query != null) {
                     searchNotes(query)
                 }
                 return true
             }
 
             override fun onQueryTextChange(query: String?): Boolean {
-                if (query != null){
+                if (query != null) {
                     searchNotes(query)
                 }
                 return true
@@ -123,45 +153,41 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(com.example.noteapp.R.menu.menu, menu)
-            return super.onCreateOptionsMenu(menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId) {
             R.id.menu_main_setting -> {
-               setUpBottomSheetDialog()
+                setUpBottomSheetDialog()
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
 
-    private fun deleteAllNotes(){
-         sharedViewModel.deleteAllNotes()
-
-
+    private fun deleteAllNotes() {
+        sharedViewModel.deleteAllNotes()
     }
 
-    private fun setUpBottomSheetDialog(){
-        val bottomSheet: BottomSheetDialog = BottomSheetDialog(this@MainActivity, R.style.BottomSheetStyle)
-        bottomSheet.setContentView(R.layout.delete_bottom_sheet_dialog)
+    private fun setUpBottomSheetDialog() {
+        val bottomSheet: BottomSheetDialog =
+            BottomSheetDialog(this@MainActivity, R.style.BottomSheetStyle)
+           bottomSheet.setContentView(R.layout.delete_bottom_sheet_dialog)
 
 
-        val tvYes : TextView? =  bottomSheet.findViewById<TextView>(R.id.tv_yes)
-        val tvNo : TextView? =  bottomSheet.findViewById<TextView>(R.id.tv_no)
-        var alertText : TextView? = bottomSheet.findViewById(R.id.tv_alert_text)
+        val tvYes: TextView? = bottomSheet.findViewById<TextView>(R.id.tv_yes)
+        val tvNo: TextView? = bottomSheet.findViewById<TextView>(R.id.tv_no)
+        var alertText: TextView? = bottomSheet.findViewById(R.id.tv_alert_text)
 
         alertText!!.text = resources.getString(R.string.alert_delete_all_notes)
 
 
         tvYes?.setOnClickListener {
-           deleteAllNotes()
+            deleteAllNotes()
             bottomSheet.dismiss()
-            recreate()
             binding.animNoTask.visibility = View.VISIBLE
             binding.rvMain.visibility = View.GONE
         }
@@ -170,58 +196,64 @@ class MainActivity : AppCompatActivity() {
             bottomSheet.dismiss()
         }
 
-
         bottomSheet.show()
     }
 
-  private fun searchNotes(query: String){
+    private fun searchNotes(query: String) {
 
         val searchQuery = "%$query%"
-      sharedViewModel.searchDatabase(searchQuery).observe(this) { list ->
-          list.let {
-              adapter.setData(it)
-          }
-      }
-  }
-
+        sharedViewModel.searchDatabase(searchQuery).observe(this) { list ->
+            list.let {
+                adapter.setData(it)
+            }
+        }
+    }
 
 
     /*
     repeatOnLifecycle is a suspend function. As such, it needs to be executed within a coroutine
      */
 
-    private fun generalData(category: String){
-        this.lifecycleScope.launch{
-            lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED){
-                 sharedViewModel.getNoteCategory(category)
-                sharedViewModel.noteDetails.collect { notes ->
-                    for (note in notes) {
-                        adapter.setData(notes)
-                        // setting up the note data recyclerview
 
-                    }
+    private fun getAllNotes(state : RequestState<List<NoteModel>>){
+        when(state){
+            is RequestState.Loading -> {
+             showDialog()
+
+            }
+
+            is RequestState.Success ->{
+                hideDialog()
+
+                if (state.data.isEmpty()){
+                    binding.animNoTask.visibility = View.VISIBLE
+                    binding.rvMain.visibility = View.GONE
+                }else {
+
+                    adapter.setData(state.data)
+                    binding.animNoTask.visibility = View.GONE
+                    binding.rvMain.visibility = View.VISIBLE
                 }
+
+            }
+
+            is RequestState.Idle ->{
+
             }
         }
     }
 
-    private fun getAllNotes(){
-        this.lifecycleScope.launch{
-//            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
-                sharedViewModel.getNoteDetails()
-                sharedViewModel.noteDetails.collect { notes ->
-                    if(notes.isEmpty()){
-                        binding.animNoTask.visibility = View.VISIBLE
-                        binding.rvMain.visibility = View.GONE
-                    }else {
-                        for (note in notes){
-                            adapter.setData(notes)
-                        binding.animNoTask.visibility = View.GONE
-                        binding.rvMain.visibility = View.VISIBLE
-                    }
-                }
-            }
-        }
+    fun showDialog(){
+        mProgressDialog = Dialog(this)
+        mProgressDialog.setContentView(R.layout.dialog_progress)
+        mProgressDialog.setCancelable(false)
+        mProgressDialog.setCanceledOnTouchOutside(false)
+        mProgressDialog.show()
+    }
+
+    fun hideDialog(){
+        mProgressDialog.hide()
+
     }
 
 }

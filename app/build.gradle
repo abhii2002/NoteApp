@@ -40,6 +40,19 @@ android {
 
 dependencies {
 
+    def coroutine = "1.5.1"
+    def coroutineScope = "2.3.1"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine"
+
+    // viewModel scope
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$coroutineScope")
+
+    //lifecycleScope
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$coroutineScope")
+
+
     //Dagger - Hilt
     implementation 'com.google.dagger:hilt-android:2.46.1'
     kapt 'com.google.dagger:hilt-compiler:2.46.1'

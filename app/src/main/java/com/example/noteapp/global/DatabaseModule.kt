@@ -2,7 +2,7 @@ package com.example.noteapp.global
 
 import android.content.Context
 import androidx.room.Room
-import com.example.noteapp.data.repositories.NoteDatabase
+import com.example.noteapp.data.NoteDatabase
 import com.example.noteapp.util.Constants
 import dagger.Module
 import dagger.Provides

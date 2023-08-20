@@ -38,4 +38,14 @@
         <item name="cornerSize">16dp</item>
     </style>
 
+
+    <style name="Dialog.theme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+
+        <item name="colorAccent">#363636</item>
+        <!--        <item name="colorPrimary">@color/colorPrimary</item>-->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+    </style>
+
 </resources>

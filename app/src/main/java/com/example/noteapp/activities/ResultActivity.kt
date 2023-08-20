@@ -49,18 +49,11 @@ class ResultActivity : AppCompatActivity() {
         setContentView(view)
 
 
-
-
-
-
          id = intent.getIntExtra("id", 0)
          noteTitle = intent.getStringExtra("note_title").toString()
          noteDescription = intent.getStringExtra("note_description").toString()
         noteCategory = intent.getStringExtra("note_category").toString()
         formatedDate = intent.getStringExtra("note_date").toString()
-
-
-
 
 
         var spinner = binding.categorySpinner
@@ -75,21 +68,14 @@ class ResultActivity : AppCompatActivity() {
 
 
 
-
-
-
         binding.buttonDelete.setOnClickListener{
             setUpBottomSheetDialog()
-//            deleteTask()
-//            startActivity(Intent(this@ResultActivity, MainActivity::class.java))
-//            finishAffinity()
 
         }
 
         binding.updateButton.setOnClickListener{
             updateNote()
-            startActivity(Intent(this@ResultActivity, MainActivity::class.java))
-            finishAffinity()
+            onBackPressed()
 
         }
 
@@ -134,10 +120,7 @@ class ResultActivity : AppCompatActivity() {
 
         tvYes?.setOnClickListener {
              deleteTask()
-            startActivity(Intent(this@ResultActivity, MainActivity::class.java))
-            finishAffinity()
-
-
+            onBackPressed()
 
         }
 
@@ -145,9 +128,8 @@ class ResultActivity : AppCompatActivity() {
           bottomSheet.dismiss()
        }
 
-
         bottomSheet.show()
-    }
+      }
 
     }
 
