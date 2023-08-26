@@ -21,7 +21,7 @@ or third party libraries such as retrofit, ok , http , room
 In our case we dont own room therefore, we need to create a module and we need to describe how to provide
 instance of our own database to our application.
 
-Thats  why we are going to inject our own interface, which provides annotation from our hilt module. But in order
+That's  why we are going to inject our own interface, which provides annotation from our hilt module. But in order
 to inject our dao first  we need to describe how to provide room database builder
  */
 
